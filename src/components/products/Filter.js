@@ -84,12 +84,18 @@ function Filter (props) {
 
 
     }
+
+    const resetHandler = event => {
+        dispatch(selectBrands([]));
+        dispatch(selectColors([]));
+
+    }
     
     
     
     return(
         <div className="filters-container">	
-             <div className="filters-header"><h3>Filters</h3></div>				
+             <div className="filters-header"><h3>Filters</h3> <button onClick={resetHandler} className="reset-button">Reset </button></div>				
              <form>					
                 <div className="filters-item"><h4>Colour</h4>
                     <ul>
