@@ -1,4 +1,14 @@
-import { GET_ALL_PRODUCTS, SET_ALL_PRODUCTS, ADD_TO_CART, SELECT_BRANDS, SELECT_COLORS } from "../constants/products";
+import { 
+    GET_ALL_PRODUCTS, 
+    SET_ALL_PRODUCTS,
+    ADD_TO_CART, 
+    SELECT_BRANDS, 
+    SELECT_COLORS,
+    SELECT_MIN_PRICE,
+    SELECT_MAX_PRICE,
+    SELECT_MIN_DISCOUNT,
+    SELECT_MAX_DISCOUNT
+ } from "../constants/products";
 
 export const getAllProducts = data => {
     const action = {
@@ -40,6 +50,39 @@ export const selectColors = data => {
     };
     return action;
 };
+
+export const selectMinDiscount = data => {
+    const action = {
+        type: SELECT_MIN_DISCOUNT,
+        data
+    };
+    return action;
+};
+
+export const selectMaxDiscount = data => {
+    const action = {
+        type: SELECT_MAX_DISCOUNT,
+        data
+    };
+    return action;
+};
+
+export const selectMinPrice = data => {
+    const action = {
+        type: SELECT_MIN_PRICE,
+        data
+    };
+    return action;
+};
+
+export const selectMaxPrice = data => {
+    const action = {
+        type: SELECT_MAX_PRICE,
+        data
+    };
+    return action;
+};
+
 
 
 

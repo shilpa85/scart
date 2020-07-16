@@ -1,4 +1,15 @@
-import { GET_ALL_PRODUCTS, SET_ALL_PRODUCTS, ADD_TO_CART, SEARCH_TERM, SELECT_BRANDS, SELECT_COLORS, RESET } from "../constants/products";
+import { GET_ALL_PRODUCTS, 
+    SET_ALL_PRODUCTS, 
+    ADD_TO_CART, 
+    SEARCH_TERM, 
+    SELECT_BRANDS, 
+    SELECT_COLORS,
+    SELECT_MIN_PRICE,
+    SELECT_MAX_PRICE,
+    SELECT_MIN_DISCOUNT,
+    SELECT_MAX_DISCOUNT,
+    RESET 
+} from "../constants/products";
 
 const initialState = {
     productList: [],
@@ -7,7 +18,12 @@ const initialState = {
     searchObject: {},
     searchTerm: "",
     selectedBrands: [],
-    selectedColors: []
+    selectedColors: [],
+    minSelectedDiscount: 0,
+    maxSelectedDiscount: 0,
+    minSelectedPrice:0,
+    maxSelectedPrice:0
+
 };
 
 export default (state = initialState, action) => {
@@ -48,6 +64,30 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 selectedColors: action.data,
+            };
+        
+        case SELECT_MIN_DISCOUNT:
+            return {
+                ...state,
+                minSelectedDiscount: action.data,
+            };
+        
+        case SELECT_MAX_DISCOUNT:
+            return {
+                ...state,
+                maxSelectedDiscount: action.data,
+            };
+
+        case SELECT_MIN_PRICE:
+            return {
+                ...state,
+                minSelectedPrice: action.data,
+            };
+        
+        case SELECT_MAX_PRICE:
+            return {
+                ...state,
+                maxSelectedPrice: action.data,
             };
 
         case RESET:

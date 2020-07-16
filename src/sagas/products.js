@@ -6,7 +6,15 @@ import {
 } from 'redux-saga/effects';
 
 import {setAllProducts} from '../actions/products';
-import {GET_ALL_PRODUCTS, SELECT_BRANDS, SELECT_COLORS} from '../constants/products';
+import {
+    GET_ALL_PRODUCTS, 
+    SELECT_BRANDS, 
+    SELECT_COLORS,
+    SELECT_MIN_PRICE,
+    SELECT_MAX_PRICE,
+    SELECT_MIN_DISCOUNT,
+    SELECT_MAX_DISCOUNT,
+} from '../constants/products';
 import api from '../utils/api';
 
 
@@ -40,6 +48,7 @@ export function* getFilteredProducts() {
                 search_string += `${key}=${value}&`;
             })
         }
+        //Filter by Brand
         const selectedBrands = yield select(state => state.products.selectedBrands);
         const filterByBrands = selectedBrands.join();
 
@@ -47,11 +56,25 @@ export function* getFilteredProducts() {
             search_string += `brand=${filterByBrands}&`;
         }
 
+         //Filter by Color
         const selectedColors = yield select(state => state.products.selectedColors);
         const filterByColors = selectedColors.join();
 
         if(filterByColors.length > 0){
             search_string += `colour=${filterByColors}&`;
+        }
+
+        //Filter by Discount
+        const minSelectedDiscount = yield select(state => state.products.minSelectedDiscount);
+
+        if(minSelectedDiscount > 0){
+            search_string += `discount=${minSelectedDiscount}&`;
+        }
+
+        const maxSelectedDiscount = yield select(state => state.products.maxSelectedDiscount);
+
+        if(maxSelectedDiscount > 0){
+            search_string += `discount=${maxSelectedDiscount}&`;
         }
 
         const apiData = yield call(api.products.fiterBy, search_string);
@@ -69,4 +92,9 @@ export const productsSaga = [
     takeLatest(GET_ALL_PRODUCTS, getAllProducts),
     takeLatest(SELECT_BRANDS, getFilteredProducts),
     takeLatest(SELECT_COLORS, getFilteredProducts),
+    takeLatest(SELECT_MIN_PRICE, getFilteredProducts),
+    takeLatest(SELECT_MAX_PRICE, getFilteredProducts),
+    takeLatest(SELECT_MIN_DISCOUNT, getFilteredProducts),
+    takeLatest(SELECT_MAX_DISCOUNT, getFilteredProducts),
 ];
+

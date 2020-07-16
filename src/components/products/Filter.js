@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { selectBrands, selectColors } from "../../actions/products";
+import { selectBrands, selectColors, selectMinDiscount, selectMaxDiscount, selectMinPrice, selectMaxPrice } from "../../actions/products";
 import axios from 'axios';
 
 
@@ -15,26 +15,28 @@ function Filter (props) {
     const [brands, setBrands] = useState([]);
     const [discounts, setDiscounts] = useState([]);
 
-    const { productList, selectedColors, selectedBrands } = useSelector(state => state.products);
+    const { productList, 
+        selectedColors, 
+        selectedBrands, 
+        minSelectedDiscount, 
+        maxSelectedDiscount,
+        minSelectedPrice,
+        maxSelectedPrice  } = useSelector(state => state.products);
 
     useEffect(()=>{
         const _colours = {};
         const _brands = [];
         const _disounts = [];
-        let _maxDisount = 0;
         productList.forEach((element) => {
             _brands.push(element.brand);
             _colours[element.colour.color] = element.colour.title;
-            if(_maxDisount < element.discount){
-                _maxDisount = element.discount;
-            }
         });
 
         setBrands([...new Set(_brands)]);
         setColours(Object.entries(_colours));
         
         //Min and Max discounts
-        for(let i= 10; i < _maxDisount+10; i+=10){
+        for(let i= 10; i < 90; i+=10){
             _disounts.push(i);
         }
         setDiscounts(_disounts);
@@ -81,13 +83,39 @@ function Filter (props) {
         }
         
         dispatch(selectColors([...new Set(_selectedColors)]));
+    }
 
+
+    const onChangeDiscount = (range) => event => {
+        console.log(range, event.target.value)
+        if(range === 'min' && !isNaN(event.target.value) ){
+            dispatch(selectMinDiscount(event.target.value));
+        }
+        if(range === 'max' && !isNaN(event.target.value) ){
+            dispatch(selectMaxDiscount(event.target.value));
+        }
+        
+    }
+
+    const onChangePrice = (range) => event => {
+        console.log(range, event.target.value)
+        if(range === 'min' && !isNaN(event.target.value) ){
+            dispatch(selectMinPrice(event.target.value));
+        }
+        if(range === 'max' && !isNaN(event.target.value) ){
+            dispatch(selectMaxPrice(event.target.value));
+        }
 
     }
+
 
     const resetHandler = event => {
         dispatch(selectBrands([]));
         dispatch(selectColors([]));
+        dispatch(selectMinDiscount(0));
+        dispatch(selectMaxDiscount(0));
+        dispatch(selectMinPrice(0));
+        dispatch(selectMaxPrice(0));
 
     }
     
@@ -140,18 +168,33 @@ function Filter (props) {
                     <div className="filters-item">
                          <h4>Price</h4>
                         <div className="dropldown-filters">
-                            <select name="min_price" aria-label="minimum price">
-                                {minPrice.map(item =>
-                                        <option value={item.key}  key={`min-${item.key}`}>{item.displayValue}</option>
+                            <select name="min_price" aria-label="minimum price" onChange={onChangePrice('min')}>
+                                {minPrice.map(item =>                                 
+                                        <option 
+                                        value={item.key}  
+                                        key={`min-${item.key}`} 
+                                        selected={minSelectedPrice && item.key == minSelectedPrice ? "selected" : false }
+                                        onChange={(e)=>onChangePrice('min')}
+                                        >
+                                            {item.displayValue}
+                                        </option>
+                                           
                                     )
                                 }
                             </select>
-                            <select name="max_price" aria-label="maximum price">
+                            <select name="max_price" aria-label="maximum price"  onChange={onChangePrice('max')}>
                                 <option value="Max" key="max">Max</option>
                                 {maxPrice.map(item =>
-                                        <option value={item.key} key={`max-${item.key}`}>{item.displayValue}</option>
+                                        <option 
+                                        value={item.key}  
+                                        key={`min-${item.key}`} 
+                                        selected={maxSelectedPrice && item.key == maxSelectedPrice ? "selected" : false }
+                                        >
+                                            {item.displayValue}
+                                        </option>
                                     )
                                 }
+
                             </select>
                         </div>
                     </div>
@@ -159,17 +202,31 @@ function Filter (props) {
                     <div className="filters-item dropldown-filters">
                        <h4>Discount</h4>
                             <div className="dropldown-filters">
-                                <select name="min_price" aria-label="minimum discount">
+                                <select name="min_discount" aria-label="minimum discount"  onChange={onChangeDiscount('min')}>
                                     <option value="0" key="min">Min</option>
                                     {discounts.map(item =>
-                                            <option value={item} key={`min-${item}`}>{item}%</option>
+                                            <option 
+                                            value={item} 
+                                            key={`min-${item}`} 
+                                            selected={minSelectedDiscount && item == minSelectedDiscount ? "selected" : false }
+                                            >
+                                               {item}%
+                                            </option>
+
                                         )
                                     }
                                 </select>
-                                <select name="max_price" aria-label="maximum discount">
+                                <select name="max_discount" aria-label="maximum discount"  onChange={onChangeDiscount('max')}>
                                     <option value={discounts[discounts.length-1]} key="max">Max</option>
                                     {discounts.map(item =>
-                                            <option value={item} key={`max-${item}`}>{item}%</option>
+                                            <option 
+                                            value={item} 
+                                            key={`min-${item}`} 
+                                            selected={maxSelectedDiscount && item == maxSelectedDiscount ? true : false }
+                                            onChange={onChangeDiscount('max')}
+                                            >
+                                               {item}%
+                                            </option>
                                         )
                                     }
                                 </select>
