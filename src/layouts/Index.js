@@ -36,7 +36,7 @@ class Layout extends React.Component{
                 
          <footer className="footer">
                 <p className="copyright">
-                   
+                   © 2020 sCart.com. All rights reserved.
                 </p>
         </footer>
         </>
