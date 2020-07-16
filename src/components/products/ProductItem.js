@@ -1,12 +1,18 @@
 import React from 'react';
 import {  addToCart} from "../../actions/products";
 import { useSelector, useDispatch } from "react-redux";
+import styled from 'styled-components';
 
 function ProductItem (props) {
 
     const dispatch = useDispatch();
-
     const { cartCount } = useSelector(state => state.products);
+
+    const StyledSpan = styled.span`
+        background-color: ${props.product.colour.color};
+        width: 12px;
+        height: 12px;
+        `;
    
     const addToCartHandler = (e) => {
         dispatch(addToCart(cartCount+1));
@@ -32,7 +38,7 @@ function ProductItem (props) {
                     </div>
 
                     <div className="product-right-column">
-                        <span className="product-color">{props.product.colour.title}</span>
+                        <StyledSpan />
                         <button className="button--primary" onClick={addToCartHandler} >Add To Cart</button>                 
                     </div>
                 </div>
