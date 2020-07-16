@@ -28,11 +28,14 @@
 
 .footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     font-size: 1.2rem;
-    margin-top: 3.2rem;
     margin-right: 1rem;
     background-color: $background-secondary;
+    color: $color-white;
+    height: 7rem;
+    text-align: center;
 
 
     @media only screen and (max-width: $bp-smallest) {
