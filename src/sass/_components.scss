@@ -72,6 +72,18 @@
       padding: 20px 15px 15px 25px;
       border-bottom: 1px solid #e9e9ed;
       border-right: 1px solid #edebef;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      h3{
+        width: 80%;
+      }
+
+      .reset-button{
+        width: 20%;
+      }
+      
     }
     
     .filters-item {
@@ -163,4 +175,6 @@
   }
 
 }
+
+
    
